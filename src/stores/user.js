@@ -27,10 +27,20 @@ export const useUserStore = defineStore("user", {
     },
     async userLogin() {
       const provider = new GoogleAuthProvider();
-      signInWithPopup(auth, provider);
+
+      try {
+        const result = await signInWithPopup(auth, provider);
+        this.setUser(result.user);
+      } catch (error) {
+        throw new Error(error.message);
+      }
     },
     async userLogout() {
-      await signOut(auth);
+      try {
+        await signOut(auth);
+      } catch (error) {
+        throw new Error(error.message);
+      }
     },
   },
 });
